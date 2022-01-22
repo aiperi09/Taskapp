@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,16 +39,19 @@ public class NewsFragment extends Fragment {
         }
 
     private void save() {
-        String title = binding.editText.getText().toString();
+        String title = binding.editText.getText().toString().trim();
         News news = new News(title,System.currentTimeMillis());
         Bundle bundle = new Bundle();
-        bundle.putSerializable("new",news);
+        bundle.putSerializable("news",news);
         getParentFragmentManager().setFragmentResult("rk_news",bundle);
+        close();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void close() {
+        NavController navController = Navigation.findNavController(requireActivity(),
+                R.id.nav_host_fragment_activity_main);
+        navController.navigateUp();
     }
+
+
 }
